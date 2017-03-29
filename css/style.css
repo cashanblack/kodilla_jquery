@@ -1,21 +1,29 @@
 #carousel {
-	overflow: hidden;
+	position: relative;
 	width: 400px;
 	height: 300px;
-	border: 15px solid red;
 	margin: 0 auto;
 }
 
-
-ul {
-	list-style-type: none;
-	width: 2000px;
+/* sliders */
+#carouselScreen {
+	overflow: hidden;
+	width: 400px;
+	height: 300px;
+	margin: 0;
 }
 
 ul, li {
 	margin: 0;
 	padding: 0;
 	border: 0;	
+}
+
+ul {
+	list-style-type: none;
+	width: 2000px;
+	position: relative;
+	margin-left: -800px;
 }
 
 li {
@@ -26,4 +34,47 @@ li {
 	overflow: hidden;
 }
 
+.carouselSideButton {
+	height: 300px; 
+	width: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #ccc;
+	position: absolute;
+	cursor: pointer;
+}
 
+/* markers */
+#markersContainer {
+	display: flex;
+	justify-content: space-around;
+	width: 400px; 
+	margin-top: 20px;
+}
+
+.js-mark {
+	width: 15px;
+	height: 15px;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	float
+}
+
+.js-mark[markId="3"] {
+	background: #ccc;
+}
+
+/* buttons */
+#js-toLeft {
+	top: 0px;
+	left: -55px;
+	border-radius: 25px 0 0 25px;
+}
+
+#js-toRight {
+	top: 0px;
+	right: -55px;
+	border-radius: 0 25px 25px 0;
+}
