@@ -1,0 +1,84 @@
+#carousel {
+	position: relative;
+	width: 400px;
+	height: 300px;
+	margin: 0 auto;
+}
+
+/* sliders */
+#carouselScreen {
+	position: relative;
+	overflow: hidden;
+	width: 400px;
+	height: 300px;
+	margin: 0;
+}
+
+#carouselScreen #imgbase {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 400px;
+	height: 300px;
+}
+
+#imgcover {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 400px;
+	height: 300px;
+}
+
+#imgcover.onleft{
+	left: -410px;
+}
+
+#imgcover.onright{
+	left: 410px;
+}
+
+.carouselSideButton {
+	height: 300px; 
+	width: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #ccc;
+	position: absolute;
+	cursor: pointer;
+}
+
+/* markers */
+#markersContainer {
+	display: flex;
+	justify-content: space-around;
+	width: 400px; 
+	margin-top: 20px;
+}
+
+.js-mark {
+	width: 15px;
+	height: 15px;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.js-mark[markId="3"] {
+	background: #ccc;
+}
+
+/* buttons */
+#js-toLeft {
+	top: 0px;
+	left: -55px;
+	border-radius: 25px 0 0 25px;
+}
+
+#js-toRight {
+	top: 0px;
+	right: -55px;
+	border-radius: 0 25px 25px 0;
+}
