@@ -1,102 +1,137 @@
 $(function () {
-	//
-	var carouselList = $("#carouselScreen ul");
-	var durationTime = 15000;
-	var skipDistance = 400;
-	var slideLeftOffset = 800; /*powinno byc wyliczane... */
+	
+	var durationTime = 5000;
 	var interval;
-	var actualSlide = 3;
+	var imageTable = [];
+	var currentImage = 0;
+	var reClickBlocker = false;
+	
+	// fill image table
+	// initiate
+	initiate();
+	
 	//
-	//markId
-
-	startSliderMove();
-
+	// functions
 	//
+	
+	function initiate(){
+		generatefileTable();
+		generateBullets();
+		runCarousel();
+	}
 
-	function startSliderMove() {
+	function generatefileTable(){
+		imageTable[0] = 'images/slider1.jpg';
+		imageTable[1] = 'images/slider2.jpg';
+		imageTable[2] = 'images/slider3.jpg';
+		imageTable[3] = 'images/slider4.jpg';
+		imageTable[4] = 'images/slider5.jpg';	
+	}
+
+	function generateBullets(){
+		for (var i = 0; i < imageTable.length ; i++) {
+			$( '#markersContainer' ).append('<div class="js-mark" markid="' + i + '"></div>');
+		}
+	}
+	
+	function runCarousel() {
+		setSliderMarkers();
+		setImageSrc("#imgbase",imageTable[currentImage]);
 		interval = setInterval(function () {
 				changeSlide(-1);
 			}, durationTime);
 	}
+	
+	
+	function setImageSrc(imgTrg,imgSrc) {
+		$(imgTrg).attr('src',imgSrc)
+	}
 
-	// RestartMove()
-	// słuzy uniknieciu "spręzynowania" po kliku w prawo
-	// lub przyslieszaniu przy kliku w lewo
-	// patrz -> obsługa buttonów
-	function RestartMove() {
+	function changeSlide(direction,target) {
+		(target) ? currentImage = target : setCurrentImage(direction);
+		addCoverImage(currentImage);
+		moveImage(direction);
+		setSliderMarkers();
+	}
+	
+	function setCurrentImage(direction){
+		currentImage -= direction;
+		if (currentImage < 0) {
+			currentImage = 4;
+		}
+		if (currentImage > 4) {
+			currentImage = 0;
+		}
+	}
+
+	function addCoverImage(currentImage){
+		$( '#carouselScreen' ).append('<img id="imgcover">');
+		setImageSrc('#imgcover',imageTable[currentImage]);
+	}
+	
+	function moveImage(direction){
+		var basePicTarget;
+		if (direction > 0 ){
+			$( '#imgcover' ).addClass( 'onleft' );
+			basePicTarget = '400px';
+		} else {
+			$( '#imgcover' ).addClass( 'onright' );
+			basePicTarget = '-400px';
+		}
+		$( '#imgcover' ).animate({left: '0px'});
+		$( '#imgbase' ).animate({left: basePicTarget},{complete: removeCoverImage});
+	}
+	
+	function removeCoverImage(){
+		backCurrentToPosition()
+		$( '#imgcover' ).remove();
+		reClickBlocker = false;
+	}
+	
+	function backCurrentToPosition(){
+		setImageSrc('#imgbase',imageTable[currentImage]);
+		$("#imgbase").css('left','0px');
+	}
+
+	function restartMove() {
 		clearInterval(interval);
-		startSliderMove();
+		runCarousel();
 	}
-
-	function changeSlide(direction, slideSpeed) {
-		if (!slideSpeed && !(slideSpeed===0)) {
-			var slideSpeed = 500;
-		}
-		carouselList.animate({
-			'marginLeft': -slideLeftOffset + skipDistance * direction
-		}, slideSpeed, function () {
-			setActualSlideValue(direction)
-			setSliderMarkers();
-			moveFirstSlide(direction);
-		});
-	}
-
-	function setActualSlideValue(direction) {
-		actualSlide -= direction;
-		if (actualSlide < 1) {
-			actualSlide = 5;
-		}
-		if (actualSlide > 5) {
-			actualSlide = 1;
-		}
-	}
-
+		
 	function setSliderMarkers() {
 		$(".js-mark").css({
 			"background-color": "#fff"
 		});
-		$(".js-mark[markId='" + actualSlide + "']").css({
+		$(".js-mark[markId='" + currentImage + "']").css({
 			"background-color": "#ccc"
 		});
 	}
-
-	function moveFirstSlide(direction) {
-		var firstItem = carouselList.find("li:first");
-		var lastItem = carouselList.find("li:last");
-
-		if (direction < 1) {
-			lastItem.after(firstItem);
-		} else {
-			firstItem.before(lastItem);
-		}
-
-		carouselList.css({
-			marginLeft: -slideLeftOffset
-		});
-	}
-
-	//
+	
+	// buttons
+	
 
 	$("#js-toLeft").on("click", function () {
-		RestartMove();
-		changeSlide(-1);
+		if ( reClickBlocker != true ){
+			restartMove();
+			changeSlide(1);
+			reClickBlocker = true;
+		}
 	});
 
 	$("#js-toRight").on("click", function () {
-		RestartMove();
-		changeSlide(1);
+		if ( reClickBlocker != true ){
+			restartMove();
+			changeSlide(-1);
+			reClickBlocker = true;
+		}
 	});
 
 	$(".js-mark").on("click", function () {
-		var targetSlide = parseInt($(this).attr("markId"));
-		var differenceBtwSlides = targetSlide - actualSlide;
-		if (differenceBtwSlides < 0) {
-			differenceBtwSlides = differenceBtwSlides + 5;
-		}
-		while (differenceBtwSlides > 0) {
-			changeSlide(-1,0);
-			differenceBtwSlides--;
+		if ( reClickBlocker != true ){
+			restartMove();
+			var target = parseInt($(this).attr("markid"));
+			changeSlide(1,target);
 		}
 	});
-
+	
 });

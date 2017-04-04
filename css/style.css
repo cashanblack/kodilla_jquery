@@ -7,31 +7,35 @@
 
 /* sliders */
 #carouselScreen {
+	position: relative;
 	overflow: hidden;
 	width: 400px;
 	height: 300px;
 	margin: 0;
 }
 
-ul, li {
-	margin: 0;
-	padding: 0;
-	border: 0;	
-}
-
-ul {
-	list-style-type: none;
-	width: 2000px;
-	position: relative;
-	margin-left: -800px;
-}
-
-li {
-	list-style: none;
-	float: left;
-	width: 400px; 
+#carouselScreen #imgbase {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 400px;
 	height: 300px;
-	overflow: hidden;
+}
+
+#imgcover {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 400px;
+	height: 300px;
+}
+
+#imgcover.onleft{
+	left: -410px;
+}
+
+#imgcover.onright{
+	left: 410px;
 }
 
 .carouselSideButton {
@@ -59,7 +63,7 @@ li {
 	background: #fff;
 	border: 1px solid #ccc;
 	border-radius: 50%;
-	float
+	cursor: pointer;
 }
 
 .js-mark[markId="3"] {
